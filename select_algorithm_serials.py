@@ -213,6 +213,7 @@ def get_points_by_volume(serial_1, serial_2, current_serial):
         points = 0
     SERIALS_POINTS[f'{current_serial["id"]}'] += points
 
+
 def get_points_by_end_status(serial_1, serial_2, current_serial) -> None:
     points = 0
     if serial_1['end_status'] == serial_2['end_status']:
@@ -246,7 +247,7 @@ def get_serial_by_id(id) -> dict:
 
 
 def get_top_ten_serials(serials) -> list:
-    """Возвращает лист из 10 кортежей (id: points)"""
+    """Возвращает лист из 10 кортежей (id, points)"""
     top_ten_list = []
     count = 0
     for k in sorted(serials, key=serials.get, reverse=True):
