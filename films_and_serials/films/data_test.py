@@ -6,7 +6,7 @@ ALL_GENRES = ['драма', 'эротика', 'боевик', 'мюзикл', '�
 
 
 def get_ojects():
-    with open(f'films_info_5.json', 'r') as file:
+    with open(f'../serials/serials_info1.json', 'r') as file:
         OBJECTS = json.loads(file.read())
     return OBJECTS
 
@@ -29,6 +29,28 @@ def test_year():
                 raise Exception
         except Exception as e:
             incorrect_years.append(film['id'])
+    print(f'Films with incorrect years: {incorrect_years}')
+
+
+def test_year_in_serials():
+    incorrect_years = []
+    for film in get_ojects():
+        try:
+            if film['year']:
+                if len(film['year']) == 1:
+                    year = int(film['year'][0])
+                    if year < 1800 or year > 2021:
+                        raise Exception
+                elif len(film['year']) == 2:
+                    start_year = int(film['year'][0])
+                    end_year = int(film['year'][1])
+                    if start_year < 1800 or start_year > 2021 or end_year < 1800 or end_year > 2021:
+                        raise Exception
+                elif len(film['year']) > 2:
+                    incorrect_years.append(film['id'])
+        except Exception:
+            incorrect_years.append(film['id'])
+
     print(f'Films with incorrect years: {incorrect_years}')
 
 
@@ -93,6 +115,6 @@ if __name__ == '__main__':
     # test_duration() # Прошел
     # test_genre() # Прошел
     # test_directors()
-    test_length_directors()
-
+    # test_length_directors()
+    test_year_in_serials()
     # print('Нет тестов')
