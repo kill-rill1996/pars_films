@@ -8,7 +8,7 @@ def get_objects():
 
 
 def load_objects(obj):
-    with open('serials_info.json', 'w') as file:
+    with open('serials_info1.json', 'w') as file:
         json.dump(obj, file, indent=4, ensure_ascii=False)
 
 
@@ -37,19 +37,19 @@ def sort_countries():
     load_objects(objects)
 
 
-def change_duration():
-    objects = get_objects()
-    for film in objects:
-        film_duration = film['duration'].split()
-        minutes = 0
-        if 'ч.' in film_duration and 'мин.' in film_duration:
-            minutes += 60 * int(film_duration[0]) + int(film_duration[2])
-        elif 'ч.' in film_duration:
-            minutes += 60 * int(film_duration[0])
-        elif 'мин.' in film_duration:
-            minutes += int(film_duration[0])
-        film['duration'] = minutes
-    load_objects(objects)
+# def change_duration():
+#     objects = get_objects()
+#     for film in objects:
+#         film_duration = film['duration'].split()
+#         minutes = 0
+#         if 'ч.' in film_duration and 'мин.' in film_duration:
+#             minutes += 60 * int(film_duration[0]) + int(film_duration[2])
+#         elif 'ч.' in film_duration:
+#             minutes += 60 * int(film_duration[0])
+#         elif 'мин.' in film_duration:
+#             minutes += int(film_duration[0])
+#         film['duration'] = minutes
+#     load_objects(objects)
 
 
 def union_serials():
@@ -63,16 +63,28 @@ def union_serials():
 
 def change_year_and_ended_serials():
     serials = get_objects()
+    serials_with_cleaned_year = []
     for serial in serials:
         if serial['year']:
-            new_year = []
             status = 0
             if '(Сериал закончился)' in serial['year']:
                 status += 1
-                split_year = serial['year'].split()
-                years = split_year[:-2]
-                print(years)
-
+                clean_year = serial['year'].replace(' (Сериал закончился)', '')
+                serial['year'] = clean_year
+            serial['end_status'] = status
+            split_years = serial['year'].split(' — ')
+            if len(split_years) == 1:
+                year = split_years[0].split()[0]
+                serial['year'] = [year]
+            else:
+                start_year = split_years[0]
+                serial['year'] = [start_year]
+                if 'по н.в.' not in split_years[1]:
+                    end_year = split_years[1].strip()
+                    if end_year != '0000':
+                        serial['year'].append(end_year)
+        serials_with_cleaned_year.append(serial)
+    load_objects(serials_with_cleaned_year)
 
 
 
@@ -82,4 +94,4 @@ def change_year_and_ended_serials():
 # sort_countries()
 # change_duration()
 # union_serials()
-# change_year_and_ended_serials()
+change_year_and_ended_serials()
