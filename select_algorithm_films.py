@@ -230,10 +230,10 @@ def show_top_films(films):
     top_ten = get_top_ten_films(FILMS_POINTS)
     top_films_list = []
     for film in films:
-        for film_id, _ in top_ten:
+        for film_id, points in top_ten:
             if film['id'] == int(film_id):
-                top_films_list.append(film)
-    return top_films_list
+                top_films_list.append((film, points))
+    return sorted(top_films_list, key=lambda x: x[1], reverse=True)
 
 
 def is_anime_or_cartoon(film):
@@ -263,9 +263,8 @@ def main(id_1, id_2):
     print(get_top_ten_films(FILMS_POINTS))
     print('_____________________________________')
     for film in top_films:
-        print(film['id'], film['title_ru'], film['year'], film['genres'], film['countries'],
-              film['directors'], film['actors'])
-
+        print(film[0]['id'], film[0]['title_ru'], film[0]['year'], film[0]['genres'], film[0]['countries'],
+              film[0]['directors'], film[0]['actors'])
 
 if __name__ == '__main__':
     FILMS = get_objects()
