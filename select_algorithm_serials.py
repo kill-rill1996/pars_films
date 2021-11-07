@@ -42,10 +42,10 @@ def get_points_by_duration(serial_1, serial_2, current_serial) -> None:
         for time in (serial_1['duration'], serial_2['duration']):
             if time:
                 time_1 = time
-        time_2 = 105
+        time_2 = 41.47
     else:
-        time_1 = 105
-        time_2 = 105
+        time_1 = 41.47
+        time_2 = 41.47
 
     average_duration = (time_1 + time_2) / 2
     points = 10 - abs(current_serial['duration'] - average_duration) * 0.2
@@ -189,6 +189,31 @@ def get_points_by_actors(serial_1, serial_2, current_serial) -> None:
     SERIALS_POINTS[f'{current_serial["id"]}'] += points
 
 
+def get_points_by_volume(serial_1, serial_2, current_serial):
+    """Начисляет очки в зависимости от полного объема сериала (сезоны * серии)"""
+
+    if serial_1['series'] and serial_2['series']:
+        series_1 = serial_1['series']
+        series_2 = serial_2['series']
+    elif serial_1['series'] or serial_2['series']:
+        for series in (serial_1['series'], serial_2['series']):
+            if series:
+                series_1 = series
+        series_2 = 15
+    else:
+        series_1 = 15
+        series_2 = 15
+
+    average_duration = (series_1 + series_2) / 2
+    if current_serial['series']:
+        points = 10 - abs(current_serial['series'] - average_duration) * 0.2
+    else:
+        points = 10 - abs(15 - average_duration) * 0.2
+    if points < 0:
+        points = 0
+    SERIALS_POINTS[f'{current_serial["id"]}'] += points
+
+
 def get_objects() -> list:
     """Получает все фильмы"""
     with open('films_and_serials/serials/serials_info1.json', 'r') as file:
@@ -240,12 +265,13 @@ def main(id_1, id_2):
 
     # get points
     for current_serial in SERIALS:
-        get_points_by_year(serial_1, serial_2, current_serial)
+        # get_points_by_year(serial_1, serial_2, current_serial)
         # get_points_by_duration(serial_1, serial_2, current_serial)
         # get_points_by_genres(serial_1, serial_2, current_serial)
         # get_points_by_country(serial_1, serial_2, current_serial)
         # get_points_by_directors(serial_1, serial_2, current_serial)
         # get_points_by_actors(serial_1, serial_2, current_serial)
+        get_points_by_volume(serial_1, serial_2, current_serial)
 
     # get top films
     top_serials = show_top_serials(SERIALS)
@@ -261,4 +287,4 @@ if __name__ == '__main__':
     SERIALS = get_objects()
     SERIALS_POINTS = create_points_dict(SERIALS)
 
-    main(1, 2)
+    main(145, 256)
