@@ -266,6 +266,7 @@ def main(id_1, id_2):
         print(film[0]['id'], film[0]['title_ru'], film[0]['year'], film[0]['genres'], film[0]['countries'],
               film[0]['directors'], film[0]['actors'])
 
+
 if __name__ == '__main__':
     FILMS = get_objects()
     FILMS_POINTS = create_points_dict(FILMS)

@@ -18,7 +18,7 @@ def get_points_by_year(serial_1, serial_2, current_serial) -> None:
             points = 7
         else:
             points = 0
-        SERIALS_POINTS[f'{current_serial["id"]}'] += points
+        return points
     else:
         if current_year in [year_1, year_2]:
             points = 11
@@ -28,7 +28,8 @@ def get_points_by_year(serial_1, serial_2, current_serial) -> None:
             points = 6
         else:
             points = 0
-        SERIALS_POINTS[f'{current_serial["id"]}'] += points
+        # SERIALS_POINTS[f'{current_serial["id"]}'] += points
+        return points
 
 
 # max 10
@@ -52,7 +53,7 @@ def get_points_by_duration(serial_1, serial_2, current_serial) -> None:
 
     if points < 0:
         points = 0
-    SERIALS_POINTS[f'{current_serial["id"]}'] += points
+    return points
 
 
 # max 170
@@ -86,7 +87,8 @@ def get_points_by_genres(serial_1, serial_2, current_serial) -> None:
                      (5 * film2_count * 1.2 ** film2_count)
         if points > 170:
             points = 170
-        SERIALS_POINTS[f'{current_serial["id"]}'] += points
+        return points
+    return 0
 
 
 # max 50
@@ -119,7 +121,8 @@ def get_points_by_country(serial_1, serial_2, current_serial) -> None:
                      (5 * film2_count * 1.2 ** film2_count)
         if points > 50:
             points = 50
-        SERIALS_POINTS[f'{current_serial["id"]}'] += points
+        return points
+    return 0
 
 
 # max 100
@@ -152,7 +155,7 @@ def get_points_by_directors(serial_1, serial_2, current_serial) -> None:
                  (10 * film2_count * 1.2 ** film2_count)
     if points > 150:
         points = 150
-    SERIALS_POINTS[f'{current_serial["id"]}'] += points
+    return points
 
 
 # max 100
@@ -186,7 +189,7 @@ def get_points_by_actors(serial_1, serial_2, current_serial) -> None:
                  (5 * film2_count * 1.2 ** film2_count)
     if points > 100:
         points = 100 + points / 100
-    SERIALS_POINTS[f'{current_serial["id"]}'] += points
+    return points
 
 
 def get_points_by_volume(serial_1, serial_2, current_serial):
@@ -211,7 +214,7 @@ def get_points_by_volume(serial_1, serial_2, current_serial):
         points = 10 - abs(15 - average_duration) * 0.2
     if points < 0:
         points = 0
-    SERIALS_POINTS[f'{current_serial["id"]}'] += points
+    return points
 
 
 def get_points_by_end_status(serial_1, serial_2, current_serial) -> None:
@@ -275,13 +278,15 @@ def main(id_1, id_2):
 
     # get points
     for current_serial in SERIALS:
-        # get_points_by_year(serial_1, serial_2, current_serial)
-        # get_points_by_duration(serial_1, serial_2, current_serial)
-        # get_points_by_genres(serial_1, serial_2, current_serial)
-        # get_points_by_country(serial_1, serial_2, current_serial)
-        # get_points_by_directors(serial_1, serial_2, current_serial)
-        # get_points_by_actors(serial_1, serial_2, current_serial)
-        get_points_by_volume(serial_1, serial_2, current_serial)
+        total_points = 0
+        total_points += get_points_by_year(serial_1, serial_2, current_serial)
+        total_points += get_points_by_duration(serial_1, serial_2, current_serial)
+        total_points += get_points_by_genres(serial_1, serial_2, current_serial)
+        total_points += get_points_by_country(serial_1, serial_2, current_serial)
+        total_points += get_points_by_directors(serial_1, serial_2, current_serial)
+        total_points += get_points_by_actors(serial_1, serial_2, current_serial)
+        total_points += get_points_by_volume(serial_1, serial_2, current_serial)
+        SERIALS_POINTS[f'{current_serial["id"]}'] += total_points
 
     # get top films
     top_serials = show_top_serials(SERIALS)
