@@ -213,6 +213,15 @@ def get_points_by_volume(serial_1, serial_2, current_serial):
         points = 0
     SERIALS_POINTS[f'{current_serial["id"]}'] += points
 
+def get_points_by_end_status(serial_1, serial_2, current_serial) -> None:
+    points = 0
+    if serial_1['end_status'] == serial_2['end_status']:
+        if current_serial['end_status'] == serial_1['end_status']:
+            points += 7
+    else:
+        points += 3
+    return points
+
 
 def get_objects() -> list:
     """Получает все фильмы"""
