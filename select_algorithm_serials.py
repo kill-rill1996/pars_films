@@ -2,28 +2,30 @@ import json
 
 
 def get_points_by_year(serial_1, serial_2, current_serial) -> None:
-    """Начисляет фильмам очки за года"""
-    if serial_1['year'] == serial_2['year']:
-        if current_serial['year'] == serial_1['year']:
-            points = 10
-        elif abs(int(current_serial['year']) - int(serial_1['year'])) == 1:
-            points = 15
-        elif abs(int(current_serial['year']) - int(serial_1['year'])) == 2:
+    """Начисляет очки за года"""
+    year_1 = int(serial_1['year'][0])
+    year_2 = int(serial_2['year'][0])
+    current_year = int(current_serial['year'][0])
+
+    if year_1 == year_2:
+        if current_year == year_1:
             points = 13
-        elif abs(int(current_serial['year']) - int(serial_1['year'])) == 3:
-            points = 11
+        elif abs(current_year - year_1) == 1:
+            points = 10
+        elif abs(current_year - year_1) == 2:
+            points = 8
+        elif abs(current_year - year_1) == 3:
+            points = 7
         else:
             points = 0
         SERIALS_POINTS[f'{current_serial["id"]}'] += points
     else:
-        if int(current_serial['year']) in [int(serial_1['year']), int(serial_2['year'])]:
-            points = 12
-        elif abs(int(current_serial['year']) - int(serial_1['year'])) == 1 or \
-                abs(int(current_serial['year']) - int(serial_2['year'])) == 1:
-            points = 10
-        elif abs(int(current_serial['year']) - int(serial_1['year'])) == 2 or \
-                abs(int(current_serial['year']) - int(serial_2['year'])) == 2:
+        if current_year in [year_1, year_2]:
+            points = 11
+        elif abs(current_year - year_1) == 1 or abs(current_year - year_2) == 1:
             points = 8
+        elif abs(current_year - year_1) == 2 or abs(current_year - year_2) == 2:
+            points = 6
         else:
             points = 0
         SERIALS_POINTS[f'{current_serial["id"]}'] += points
@@ -31,7 +33,7 @@ def get_points_by_year(serial_1, serial_2, current_serial) -> None:
 
 # max 10
 def get_points_by_duration(serial_1, serial_2, current_serial) -> None:
-    """Начисляет фильмам очки за продолжительность"""
+    """Начисляет очки за продолжительность"""
 
     if serial_1['duration'] and serial_2['duration']:
         time_1 = serial_1['duration']
@@ -89,7 +91,7 @@ def get_points_by_genres(serial_1, serial_2, current_serial) -> None:
 
 # max 50
 def get_points_by_country(serial_1, serial_2, current_serial) -> None:
-    """Начисляет фильмам очки за страну"""
+    """Начисляет очки за страну"""
     coinciding_countries = list(set(serial_1['countries']) & set(serial_2['countries']))
     film1_countries = list(set(serial_1['countries']) - set(serial_2['countries']))
     film2_countries = list(set(serial_2['countries']) - set(serial_1['countries']))
@@ -189,13 +191,13 @@ def get_points_by_actors(serial_1, serial_2, current_serial) -> None:
 
 def get_objects() -> list:
     """Получает все фильмы"""
-    with open('serials_info.json', 'r') as file:
+    with open('films_and_serials/serials/serials_info1.json', 'r') as file:
         films = json.loads(file.read())
     return films
 
 
 def create_points_dict(films) -> dict:
-    """Создает словарь (key - id фильма, value - кол-во очков)"""
+    """Создает словарь (key - id сериала, value - кол-во очков)"""
     films_point_dict = {}
     for film in films:
         films_point_dict[f"{film['id']}"] = 0
@@ -203,7 +205,7 @@ def create_points_dict(films) -> dict:
 
 
 def get_serial_by_id(id) -> dict:
-    """Получает фильм по id и удаляет его из списка всех фильмов"""
+    """Получает объект по id и удаляет его из списка всех фильмов/сериалов"""
     for serial in SERIALS:
         if serial['id'] == id:
             return SERIALS.pop(SERIALS.index(serial))
@@ -239,18 +241,19 @@ def main(id_1, id_2):
     # get points
     for current_serial in SERIALS:
         get_points_by_year(serial_1, serial_2, current_serial)
-        get_points_by_duration(serial_1, serial_2, current_serial)
-        get_points_by_genres(serial_1, serial_2, current_serial)
-        get_points_by_country(serial_1, serial_2, current_serial)
-        get_points_by_directors(serial_1, serial_2, current_serial)
-        get_points_by_actors(serial_1, serial_2, current_serial)
+        # get_points_by_duration(serial_1, serial_2, current_serial)
+        # get_points_by_genres(serial_1, serial_2, current_serial)
+        # get_points_by_country(serial_1, serial_2, current_serial)
+        # get_points_by_directors(serial_1, serial_2, current_serial)
+        # get_points_by_actors(serial_1, serial_2, current_serial)
 
     # get top films
     top_serials = show_top_serials(SERIALS)
     print(get_top_ten_serials(SERIALS_POINTS))
     print('_____________________________________')
     for serial in top_serials:
-        print(serial['id'], serial['title_ru'], serial['year'], serial['genres'], serial['countries'],
+        print(serial['id'], serial['title_ru'], serial['year'],
+              serial['genres'], serial['countries'],
               serial['directors'], serial['actors'])
 
 
@@ -258,4 +261,4 @@ if __name__ == '__main__':
     SERIALS = get_objects()
     SERIALS_POINTS = create_points_dict(SERIALS)
 
-    main(28, 51)
+    main(1, 2)

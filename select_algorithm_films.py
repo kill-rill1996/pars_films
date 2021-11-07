@@ -259,4 +259,4 @@ if __name__ == '__main__':
     FILMS = get_objects()
     FILMS_POINTS = create_points_dict(FILMS)
 
-    main(28, 51)
+    main(122, 2456)
