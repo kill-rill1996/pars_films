@@ -18,7 +18,8 @@ def get_points_by_year(film_1, film_2, current_film) -> None:
             points = 9
         else:
             points = 0
-        FILMS_POINTS[f'{current_film["id"]}'] += points
+        # FILMS_POINTS[f'{current_film["id"]}'] += points
+        return points
     else:
         if current_year in [year_1, year_2]:
             points = 9
@@ -28,8 +29,8 @@ def get_points_by_year(film_1, film_2, current_film) -> None:
             points = 5
         else:
             points = 0
-        FILMS_POINTS[f'{current_film["id"]}'] += points
-
+        # FILMS_POINTS[f'{current_film["id"]}'] += points
+        return points
 
 # max 10
 def get_points_by_duration(film_1, film_2, current_film) -> None:
@@ -52,7 +53,7 @@ def get_points_by_duration(film_1, film_2, current_film) -> None:
 
     if points < 0:
         points = 0
-    FILMS_POINTS[f'{current_film["id"]}'] += points
+    return points
 
 
 # max 170
@@ -86,7 +87,8 @@ def get_points_by_genres(film_1, film_2, current_film) -> None:
                                              (5 * film2_count * 1.2 ** film2_count)
         if points > 170:
             points = 170
-        FILMS_POINTS[f'{current_film["id"]}'] += points
+        return points
+    return 0
 
 
 # max 50
@@ -119,7 +121,8 @@ def get_points_by_country(film_1, film_2, current_film) -> None:
                                          (5 * film2_count * 1.2 ** film2_count)
         if points > 50:
             points = 50
-        FILMS_POINTS[f'{current_film["id"]}'] += points
+        return points
+    return 0
 
 
 # max 100
@@ -152,7 +155,7 @@ def get_points_by_directors(film_1, film_2, current_film) -> None:
                                          (10 * film2_count * 1.2 ** film2_count)
     if points > 150:
         points = 150
-    FILMS_POINTS[f'{current_film["id"]}'] += points
+    return points
 
 
 # max 100
@@ -186,7 +189,7 @@ def get_points_by_actors(film_1, film_2, current_film) -> None:
                                          (5 * film2_count * 1.2 ** film2_count)
     if points > 100:
         points = 100 + points / 100
-    FILMS_POINTS[f'{current_film["id"]}'] += points
+    return points
 
 
 def get_objects() -> list:
@@ -233,6 +236,11 @@ def show_top_films(films):
     return top_films_list
 
 
+def is_anime_or_cartoon(film):
+    if 'аниме' in film['genres'] or 'мультфильмы' in film['genres']:
+        return True
+
+
 def main(id_1, id_2):
 
     # get searched films
@@ -241,12 +249,14 @@ def main(id_1, id_2):
 
     # get points
     for current_film in FILMS:
-        get_points_by_year(film_1, film_2, current_film)
-        get_points_by_duration(film_1, film_2, current_film)
-        get_points_by_genres(film_1, film_2, current_film)
-        get_points_by_country(film_1, film_2, current_film)
-        get_points_by_directors(film_1, film_2, current_film)
-        get_points_by_actors(film_1, film_2, current_film)
+        total_points = 0
+        total_points += get_points_by_year(film_1, film_2, current_film)
+        total_points += get_points_by_duration(film_1, film_2, current_film)
+        total_points += get_points_by_genres(film_1, film_2, current_film)
+        total_points += get_points_by_country(film_1, film_2, current_film)
+        total_points += get_points_by_directors(film_1, film_2, current_film)
+        total_points += get_points_by_actors(film_1, film_2, current_film)
+        FILMS_POINTS[f'{current_film["id"]}'] += total_points
 
     # get top films
     top_films = show_top_films(FILMS)
