@@ -3,27 +3,29 @@ import json
 
 def get_points_by_year(film_1, film_2, current_film) -> None:
     """Начисляет фильмам очки за года"""
-    if film_1['year'] == film_2['year']:
-        if current_film['year'] == film_1['year']:
-            points = 10
-        elif abs(int(current_film['year']) - int(film_1['year'])) == 1:
+    year_1 = int(film_1['year'])
+    year_2 = int(film_2['year'])
+    current_year = int(current_film['year'])
+
+    if year_1 == year_2:
+        if current_year == year_1:
             points = 15
-        elif abs(int(current_film['year']) - int(film_1['year'])) == 2:
+        elif abs(current_year - year_1) == 1:
             points = 13
-        elif abs(int(current_film['year']) - int(film_1['year'])) == 3:
+        elif abs(current_year - year_1) == 2:
             points = 11
+        elif abs(current_year - year_1) == 3:
+            points = 9
         else:
             points = 0
         FILMS_POINTS[f'{current_film["id"]}'] += points
     else:
-        if int(current_film['year']) in [int(film_1['year']), int(film_2['year'])]:
-            points = 12
-        elif abs(int(current_film['year']) - int(film_1['year'])) == 1 or \
-                abs(int(current_film['year']) - int(film_2['year'])) == 1:
-            points = 10
-        elif abs(int(current_film['year']) - int(film_1['year'])) == 2 or \
-                abs(int(current_film['year']) - int(film_2['year'])) == 2:
-            points = 8
+        if current_year in [year_1, year_2]:
+            points = 9
+        elif abs(current_year - year_1) == 1 or abs(current_year - year_2) == 1:
+            points = 7
+        elif abs(current_year - year_1) == 2 or abs(current_year - year_2) == 2:
+            points = 5
         else:
             points = 0
         FILMS_POINTS[f'{current_film["id"]}'] += points
