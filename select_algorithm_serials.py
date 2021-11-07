@@ -262,10 +262,10 @@ def show_top_serials(serials):
     top_ten = get_top_ten_serials(SERIALS_POINTS)
     top_serials_list = []
     for serial in serials:
-        for serial_id, _ in top_ten:
+        for serial_id, points in top_ten:
             if serial['id'] == int(serial_id):
-                top_serials_list.append(serial)
-    return top_serials_list
+                top_serials_list.append((serial, points))
+    return sorted(top_serials_list, key=lambda x: x[1], reverse=True)
 
 
 def main(id_1, id_2):
@@ -288,9 +288,9 @@ def main(id_1, id_2):
     print(get_top_ten_serials(SERIALS_POINTS))
     print('_____________________________________')
     for serial in top_serials:
-        print(serial['id'], serial['title_ru'], serial['year'],
-              serial['genres'], serial['countries'],
-              serial['directors'], serial['actors'])
+        print(serial[0]['id'], serial[0]['title_ru'], serial[0]['year'],
+              serial[0]['genres'], serial[0]['countries'],
+              serial[0]['directors'], serial[0]['actors'])
 
 
 if __name__ == '__main__':
