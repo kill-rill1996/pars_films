@@ -302,4 +302,4 @@ if __name__ == '__main__':
     SERIALS = get_objects()
     SERIALS_POINTS = create_points_dict(SERIALS)
 
-    main(145, 256)
+    main(146, 257)
