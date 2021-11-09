@@ -286,6 +286,7 @@ def main(id_1, id_2):
         total_points += get_points_by_directors(serial_1, serial_2, current_serial)
         total_points += get_points_by_actors(serial_1, serial_2, current_serial)
         total_points += get_points_by_volume(serial_1, serial_2, current_serial)
+        total_points += get_points_by_end_status(serial_1, serial_2, current_serial)
         SERIALS_POINTS[f'{current_serial["id"]}'] += total_points
 
     # get top films
