@@ -6,7 +6,7 @@ ALL_GENRES = ['драма', 'эротика', 'боевик', 'мюзикл', '�
 
 
 def get_ojects():
-    with open(f'../serials/serials_info1.json', 'r') as file:
+    with open(f'films_info_6.json', 'r') as file:
         OBJECTS = json.loads(file.read())
     return OBJECTS
 
@@ -110,11 +110,11 @@ def test_length_directors():
 
 
 if __name__ == '__main__':
-    # test_countries() # Не получается убрать [BSCP]
+    test_countries() # Не получается убрать [BSCP]
     # test_year() # Три фильма с поздним годом (нужно проверить 21758, 48006, 48190)
     # test_duration() # Прошел
     # test_genre() # Прошел
     # test_directors()
     # test_length_directors()
-    test_year_in_serials()
+    # test_year_in_serials()
     # print('Нет тестов')

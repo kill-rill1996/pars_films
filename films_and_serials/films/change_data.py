@@ -2,13 +2,13 @@ import json
 
 
 def get_objects():
-    with open(f'films_info.json', 'r') as file:
+    with open(f'films_info_6.json', 'r') as file:
         OBJECTS = json.loads(file.read())
     return OBJECTS
 
 
 def load_objects(obj):
-    with open('films_info_6.json', 'w') as file:
+    with open('films_info_7.json', 'w') as file:
         json.dump(obj, file, indent=4, ensure_ascii=False)
         print("Json успешно записан")
 
@@ -61,8 +61,19 @@ def change_null_duration():
     load_objects(objects)
 
 
+def rename_id_field():
+    objects = get_objects()
+    count = 1
+    for film in objects:
+        film['id'] = count
+        count += 1
+    load_objects(objects)
+
+
+
 # print(create_genres_list())
 # change_NBSP()
 # sort_countries()
 # change_duration()
 # change_null_duration()
+# rename_id_field()
