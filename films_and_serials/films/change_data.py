@@ -8,7 +8,7 @@ def get_objects():
 
 
 def load_objects(obj):
-    with open('films_info_5.json', 'w') as file:
+    with open('films_info_6.json', 'w') as file:
         json.dump(obj, file, indent=4, ensure_ascii=False)
         print("Json успешно записан")
 
@@ -52,7 +52,17 @@ def change_duration():
         film['duration'] = minutes
     load_objects(objects)
 
+
+def change_null_duration():
+    objects = get_objects()
+    for film in objects:
+        if film['duration'] == 0:
+            film['duration'] = 105
+    load_objects(objects)
+
+
 # print(create_genres_list())
 # change_NBSP()
 # sort_countries()
 # change_duration()
+# change_null_duration()
