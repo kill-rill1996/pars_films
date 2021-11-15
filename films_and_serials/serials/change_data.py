@@ -1,14 +1,14 @@
 import json
 
 
-def get_objects():
-    with open('serials_info.json', 'r') as file:
+def get_objects(path):
+    with open(path, 'r') as file:
         objects = json.loads(file.read())
     return objects
 
 
 def load_objects(obj):
-    with open('serials_info1.json', 'w') as file:
+    with open('serials_info_3.json', 'w') as file:
         json.dump(obj, file, indent=4, ensure_ascii=False)
 
 
@@ -87,6 +87,17 @@ def change_year_and_ended_serials():
     load_objects(serials_with_cleaned_year)
 
 
+def add_end_status():
+    objects = get_objects('serials_info_2.json')
+    objects_with_status = get_objects('serials_info1.json')
+    new_serials = []
+
+    for new, old in zip(objects, objects_with_status):
+        new['end_status'] = old['end_status']
+        new_serials.append(new)
+    load_objects(new_serials)
+
+
 
 
 # print(create_genres_list())
@@ -94,4 +105,5 @@ def change_year_and_ended_serials():
 # sort_countries()
 # change_duration()
 # union_serials()
-change_year_and_ended_serials()
+# change_year_and_ended_serials()
+add_end_status()

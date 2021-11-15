@@ -229,7 +229,7 @@ def get_points_by_end_status(serial_1, serial_2, current_serial) -> None:
 
 def get_objects() -> list:
     """Получает все фильмы"""
-    with open('films_and_serials/serials/serials_info1.json', 'r') as file:
+    with open('serials_info_2.json', 'r') as file:
         films = json.loads(file.read())
     return films
 
@@ -287,6 +287,10 @@ def main(id_1, id_2):
         total_points += get_points_by_actors(serial_1, serial_2, current_serial)
         total_points += get_points_by_volume(serial_1, serial_2, current_serial)
         total_points += get_points_by_end_status(serial_1, serial_2, current_serial)
+
+        if current_serial['rating']:
+            total_points = total_points * (1 + (float(current_serial['rating']) - 7.0) * 0.07)
+        #
         SERIALS_POINTS[f'{current_serial["id"]}'] += total_points
 
     # get top films
@@ -303,4 +307,4 @@ if __name__ == '__main__':
     SERIALS = get_objects()
     SERIALS_POINTS = create_points_dict(SERIALS)
 
-    main(146, 257)
+    main(2819, 1465)

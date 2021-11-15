@@ -194,7 +194,7 @@ def get_points_by_actors(film_1, film_2, current_film) -> None:
 
 def get_objects() -> list:
     """Получает все фильмы"""
-    with open('films_info.json', 'r') as file:
+    with open('films_info_2.json', 'r') as file:
         films = json.loads(file.read())
     return films
 
@@ -256,6 +256,10 @@ def main(id_1, id_2):
         total_points += get_points_by_country(film_1, film_2, current_film)
         total_points += get_points_by_directors(film_1, film_2, current_film)
         total_points += get_points_by_actors(film_1, film_2, current_film)
+
+        if current_film['rating']:
+            total_points = total_points * (1 + (float(current_film['rating']) - 6.8) * 0.08)
+
         FILMS_POINTS[f'{current_film["id"]}'] += total_points
 
     # get top films
@@ -271,4 +275,4 @@ if __name__ == '__main__':
     FILMS = get_objects()
     FILMS_POINTS = create_points_dict(FILMS)
 
-    main(123, 124)
+    main(9755, 490)
