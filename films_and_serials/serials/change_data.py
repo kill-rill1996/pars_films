@@ -1,15 +1,16 @@
 import json
 
 
-def get_objects(path):
-    with open(path, 'r') as file:
+def get_objects():
+    with open('old_jsons/serials_info_3.json', 'r') as file:
         objects = json.loads(file.read())
     return objects
 
 
 def load_objects(obj):
-    with open('serials_info_3.json', 'w') as file:
+    with open('serials_info_4_lower.json', 'w') as file:
         json.dump(obj, file, indent=4, ensure_ascii=False)
+    print('Все обекты успешно записаны в базу данных')
 
 
 # def change_NBSP(): # \xa0
@@ -97,6 +98,13 @@ def add_end_status():
         new_serials.append(new)
     load_objects(new_serials)
 
+def lower_case_film_title_ru():
+    objects = get_objects()
+    for film in objects:
+        new_title = film['title_ru'].lower()
+        film['title_ru'] = new_title
+    load_objects(objects)
+
 
 
 
@@ -106,4 +114,5 @@ def add_end_status():
 # change_duration()
 # union_serials()
 # change_year_and_ended_serials()
-add_end_status()
+# add_end_status()
+lower_case_film_title_ru()

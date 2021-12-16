@@ -263,12 +263,12 @@ def main(id_1, id_2):
         FILMS_POINTS[f'{current_film["id"]}'] += total_points
 
     # get top films
-    top_films = show_top_films(FILMS)
     print(get_top_ten_films(FILMS_POINTS))
-    print('_____________________________________')
-    for film in top_films:
-        print(film[0]['id'], film[0]['title_ru'], film[0]['year'], film[0]['genres'], film[0]['countries'],
-              film[0]['directors'], film[0]['actors'])
+    # print('_____________________________________')
+    # top_films = show_top_films(FILMS)
+    # for film in top_films:
+    #     print(film[0]['id'], film[0]['title_ru'], film[0]['year'], film[0]['genres'], film[0]['countries'],
+    #           film[0]['directors'], film[0]['actors'])
 
 
 if __name__ == '__main__':
