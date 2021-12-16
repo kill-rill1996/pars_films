@@ -6,7 +6,7 @@ ALL_GENRES = ['драма', 'эротика', 'боевик', 'мюзикл', '�
 
 
 def get_ojects():
-    with open(f'films_info_6.json', 'r') as file:
+    with open(f'films_info_9.json', 'r') as file:
         OBJECTS = json.loads(file.read())
     return OBJECTS
 
@@ -109,8 +109,20 @@ def test_length_directors():
     print(l5)
 
 
+def get_all_countries():
+    objects = get_ojects()
+    country_list = []
+
+    for obj in objects:
+        for country in obj['countries']:
+            if country not in country_list:
+                country_list.append(country)
+
+    print(len(country_list))
+
+
 if __name__ == '__main__':
-    test_countries() # Не получается убрать [BSCP]
+    # test_countries()
     # test_year() # Три фильма с поздним годом (нужно проверить 21758, 48006, 48190)
     # test_duration() # Прошел
     # test_genre() # Прошел
@@ -118,3 +130,5 @@ if __name__ == '__main__':
     # test_length_directors()
     # test_year_in_serials()
     # print('Нет тестов')
+    # print(len(ALL_GENRES))
+    get_all_countries()

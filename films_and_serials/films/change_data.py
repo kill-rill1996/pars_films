@@ -1,14 +1,16 @@
 import json
 
+NSBP_LIST = [7528, 9146, 9457, 11186, 12723, 12789, 14791, 18507, 19299, 20189, 20234, 20312, 20867, 21239, 23228, 23443, 23774, 23783, 23890, 24046, 24090, 24603, 24857, 25302, 25384, 27341, 27518, 27564, 27593, 27651, 27825, 27985, 28184, 28193, 28193, 28943, 29009, 29011, 29924, 30037, 30541, 30703, 31996, 33897, 33996, 34384, 39103, 39572, 41045, 48347, 48632, 48693, 48921, 48943, 48971, 49912, 50560, 52752, 56295, 56868, 58218]
+
 
 def get_objects():
-    with open(f'films_info_6.json', 'r') as file:
+    with open(f'films_info_10_lower_title.json', 'r') as file:
         OBJECTS = json.loads(file.read())
     return OBJECTS
 
 
 def load_objects(obj):
-    with open('films_info_7.json', 'w') as file:
+    with open('films_info_11_harry_potter.json', 'w') as file:
         json.dump(obj, file, indent=4, ensure_ascii=False)
         print("Json успешно записан")
 
@@ -70,6 +72,46 @@ def rename_id_field():
     load_objects(objects)
 
 
+def split_nsbp():
+    objects = get_objects()
+    for ob in objects:
+        if ob['id'] in NSBP_LIST:
+            new_country_list = []
+            for country in ob['countries']:
+                splitted = country.split()
+                joined = ' '.join(splitted)
+                new_country_list.append(joined)
+            ob['countries'] = new_country_list
+    load_objects(objects)
+
+
+def rename_vatican():
+    objects = get_objects()
+    for film in objects:
+        new_country_list = []
+        for country in film['countries']:
+            if country == 'Папский Престол (Государство-город Ватикан)':
+                country = 'Ватикан'
+            new_country_list.append(country)
+        film['countries'] = new_country_list
+    load_objects(objects)
+
+
+def lower_case_film_title_ru():
+    objects = get_objects()
+    for film in objects:
+        new_title = film['title_ru'].lower()
+        film['title_ru'] = new_title
+    load_objects(objects)
+
+def change_harry_pooter():
+    objects = get_objects()
+    for film in objects:
+        if film['id'] == 28:
+            film['title_ru'] = film['title_ru'].replace('ii', '2')
+        if film['id'] == 30:
+            film['title_ru'] = film['title_ru'].replace('i', '1')
+    load_objects(objects)
 
 # print(create_genres_list())
 # change_NBSP()
@@ -77,3 +119,7 @@ def rename_id_field():
 # change_duration()
 # change_null_duration()
 # rename_id_field()
+# split_nsbp()
+# rename_vatican()
+# lower_case_film_title_ru()
+change_harry_pooter()
